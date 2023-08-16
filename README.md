@@ -18,7 +18,7 @@ Feel free to customize the desctiption to perfectly suit your project's essence.
 
 The script will iterate through each `.txt` file in the specified folder, searching for the `search_string` and replacing it with the `replace_string` if found.
 
-##Notes 
+## Notes 
 - Make sure you have Python installed on your system.
 - The script uses the `os` module for file manipulation.
 - Back up your files before running the script, just in case.
