@@ -9,7 +9,7 @@ Feel free to customize the desctiption to perfectly suit your project's essence.
 ## Instalation 
 1. Clone the repository: 'git clove <https://github.com/Gapioa/StringA>'
 2. Navigate to the project directory: 'cd StringA'
-####3. Install dependencies: 'pip install -r requirements.txt'
+3. Install dependencies: 'pip install -r requirements.txt'
 
 ## Usage
 1. Edit the `folder_path` variable in the script to point to the directory containing the files you want to modify.
