@@ -1,6 +1,6 @@
 import os
 
-folder_path = r"C:\Users\kalma\Desktop\test" #Kad menjas obavezno ostavi 'r', ako ne radi samo ukloni
+folder_path = r"folder_path" #Kad menjas obavezno ostavi 'r', ako ne radi samo ukloni
 
 def replace_in_file(file_path, search_string, replace_string):
     try:
