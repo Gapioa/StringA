@@ -7,7 +7,7 @@ Elevate your efficiency and precision as you bid farewell to tediuos text transf
 Feel free to customize the desctiption to perfectly suit your project's essence. If you need further adjustment or additional details, don't hesitate to ask!
 
 ## Instalation 
-1. Clone the repository: 'git clove <https://github.com/Gapioa/StringA>'
+1. Clone the repository: 'git clone <https://github.com/Gapioa/StringA>'
 2. Navigate to the project directory: 'cd StringA'
 3. Install dependencies: 'pip install -r requirements.txt'
 
