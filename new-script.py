@@ -3,44 +3,65 @@ import openpyxl
 import re
 from difflib import SequenceMatcher
 
-# Set folder path where both files are located
+# Set folder path where the script is running
 folder_path = os.path.dirname(os.path.abspath(__file__))
 
-# Define file names (change these to your actual file names)
-excel_file = os.path.join(folder_path, 'your_excel_file.xlsx')  # <-- Change filename
-text_file = os.path.join(folder_path, 'your_text_file.txt')     # <-- Change filename
-output_file = os.path.join(folder_path, 'missing.txt')
+# Define actual filenames here
+excel_filename = 'your_excel_file.xlsx'  # <-- Replace this
+text_filename = 'your_text_file.txt'     # <-- Replace this
+output_filename = 'missing.txt'
 
-# Load data from Column A in the Excel file (to lowercase)
+# Full paths
+excel_file = os.path.join(folder_path, excel_filename)
+text_file = os.path.join(folder_path, text_filename)
+output_file = os.path.join(folder_path, output_filename)
+
+# --- Sanity Checks ---
+print(f"📄 Excel file: {excel_file}")
+print(f"📄 Text file: {text_file}")
+if not os.path.exists(excel_file):
+    print("❌ Excel file not found!")
+    exit(1)
+if not os.path.exists(text_file):
+    print("❌ Text file not found!")
+    exit(1)
+
+# --- Load Excel Data ---
+print("🔄 Reading Excel...")
 wb = openpyxl.load_workbook(excel_file, read_only=True)
 sheet = wb.active
 excel_values = set(str(cell.value).strip().lower() for cell in sheet['A'] if cell.value)
+print(f"✅ Excel items loaded: {len(excel_values)}")
 
-# Extract only names between **double asterisks** from the text file
+# --- Extract double-asterisk names from text file ---
+print("🔍 Extracting names from text file...")
 with open(text_file, 'r', encoding='utf-8') as f:
     text_content = f.read()
 
-# Find all **name** patterns using regex
 pattern = re.compile(r"\*\*(.*?)\*\*")
 text_names = [match.lower().strip() for match in pattern.findall(text_content)]
+print(f"✅ Found {len(text_names)} names in text.")
 
-# Define similarity threshold (0.7 = 70% similarity)
+# --- Compare using fuzzy matching ---
 SIMILARITY_THRESHOLD = 0.7
 
-# Helper function to check for fuzzy match
 def is_similar(name, excel_set):
     for excel_name in excel_set:
-        ratio = SequenceMatcher(None, name, excel_name).ratio()
-        if ratio >= SIMILARITY_THRESHOLD:
+        if SequenceMatcher(None, name, excel_name).ratio() >= SIMILARITY_THRESHOLD:
             return True
     return False
 
-# Determine which names are missing (not similar to any Excel entry)
+print("🔁 Comparing for missing items...")
 missing = sorted(name for name in text_names if not is_similar(name, excel_values))
 
-# Write the missing names to output file
-with open(output_file, 'w', encoding='utf-8') as f:
-    for item in missing:
-        f.write(item + '\n')
-
-print(f"Done! Missing values written to {output_file}")
+# --- Write results ---
+if not missing:
+    print("✅ All items matched! Nothing is missing.")
+    with open(output_file, 'w', encoding='utf-8') as f:
+        f.write("Nothing is missing. All items are present.\n")
+else:
+    print(f"🚨 Missing items found: {len(missing)}")
+    with open(output_file, 'w', encoding='utf-8') as f:
+        for item in missing:
+            f.write(item + '\n')
+    print(f"✅ Missing items written to {output_file}")
